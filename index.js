@@ -2,6 +2,7 @@ const express=require('express')
 const app=express()
 const db=require('./utils/db-connection')
 const usersRoutes=require('./routes/usersRoutes')
+const busRoutes=require('./routes/busRoutes')
 
 app.use(express.json())
 
@@ -11,6 +12,7 @@ app.get('/',(req,res)=>{
 
 
 app.use('/users',usersRoutes)
+app.use('/buses',busRoutes)
 
 
 

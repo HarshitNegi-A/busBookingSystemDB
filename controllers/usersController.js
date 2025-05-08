@@ -2,6 +2,37 @@
 const connection = require('../utils/db-connection');
 const db=require('../utils/db-connection')
 
+const getUsers=(req,res)=>{
+    const selectQuery="select * from users"
+    db.execute(selectQuery,(err,result)=>{
+        if(err){
+            console.log(err)
+            res.status(500).send(err.message)
+            connection.end()
+            return;
+        }
+        console.log("Users' data is fetched")
+        console.log(result)
+        const resultArray=result.map((data)=>(
+            `<tr>
+            <td>${data.name}<td>
+            <td>${data.email}<td>
+            <tr>`
+        ))
+        res.status(200).send(`
+            <table>
+            <thead>
+            <tr>
+            <th>Name</th>
+            <th>Email</th>
+            </tr>
+            </thead>
+            <tbody>${resultArray}</tbody>
+            </table>
+            `)
+    })
+}
+
 const addUsers=(req,res)=>{
     const {email,name}=req.body
     const insertQuery='INSERT INTO USERS(email,name) VALUES (?,?)';
@@ -61,6 +92,7 @@ const deleteUser=(req,res)=>{
 }
 
 module.exports={
+    getUsers,
     addUsers,
     updateUsers,
     deleteUser
