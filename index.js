@@ -1,8 +1,20 @@
 const express=require('express')
 const app=express()
-const db=require('./utils/db-connection')
 const usersRoutes=require('./routes/usersRoutes')
 const busRoutes=require('./routes/busRoutes')
+const sequelize = require('./utils/db-connection');
+const User = require('./models/user');
+const Bus = require('./models/Bus');
+const Booking = require('./models/Booking');
+const Payment = require('./models/Payment');
+
+sequelize.sync({ alter: true })  // or { force: true } for development
+  .then(() => {
+    console.log('✅ All tables synced successfully');
+  })
+  .catch((err) => {
+    console.error('❌ Error syncing tables:', err);
+  });
 
 app.use(express.json())
 
